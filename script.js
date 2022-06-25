@@ -4,8 +4,9 @@ const removeClassAfterDelay = function (obj, delay, classNames) {
   }, delay);
 };
 
+const display = document.querySelector(".screen span");
+
 const updateDisplay = (value) => {
-  const display = document.querySelector(".screen span");
   display.innerHTML = value;
 };
 
@@ -44,7 +45,7 @@ for (let op2 of [div, mult, sub, add, equal])
 
 // SECONDARY OPERATORS
 
-const [clr, pm, percent] = document.querySelectorAll(".sec-op");
+const [clr, pm, percent, del] = document.querySelectorAll(".sec-op");
 
 const removeSecOpStyle = (obj) =>
   removeClassAfterDelay(obj, 120, ["click", "sec-op-click"]);
@@ -70,11 +71,14 @@ pm.addEventListener("mousedown", function () {
 });
 
 // select button with id percent and add eventListener for mouse down, which is given the callback secondaryOpStyle
+
 percent.addEventListener("mousedown", function () {
   secondaryOpStyle(this);
   removeSecOpStyle(this);
 });
 
-
-
-
+del.addEventListener("mousedown", function () {
+  secondaryOpStyle(this);
+  updateDisplay(display.innerHTML.length === 1 ? "0" : display.innerHTML.slice(0, -1));
+  removeSecOpStyle(this);
+});
