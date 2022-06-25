@@ -1,0 +1,81 @@
+body {
+  font-family: "inter", sans-serif;
+  background-color: rgb(213, 201, 201);
+}
+
+::selection{
+    background:none;
+}
+
+.calculator {
+    box-shadow: 5px 5px 12px #574f4f;
+  margin: 19vh auto;
+  border: 9px solid rgb(62, 41, 66);
+  display: grid;
+  width: 340px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(6, minmax(3.5em, auto));
+  background-color: black;
+  gap: 3px;
+  border-radius: 0.4em;
+}
+
+.screen {
+  display: flex;
+  height: 6em;
+  grid-column: span 4;
+  background-color: rgb(64, 49, 49);
+  margin-bottom: 4px;
+  justify-content: flex-end;
+}
+
+.screen span {
+  align-self: center;
+  color: rgb(212, 222, 201);
+  font-size: 3em;
+  margin: 0 4px;
+}
+button {
+  font-size: 1.5em;
+  border-radius: 0.14em;
+  border: 1px solid black;
+  background-color: hsl(0, 24%, 80%);
+  transition: 120ms ease-in-out all;
+}
+
+.op {
+  background-color: #ffa500;
+  font-size: 1.6em;
+}
+
+.sec-op {
+  background-color: #8c6acf;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.click {
+  transform: translateY(0.5px);
+}
+
+.dig-click {
+  background-color: hsl(0, 24%, 70%);
+}
+
+.op-click {
+  background-color: #ca8c18;
+}
+
+.sec-op-click {
+  background-color: #7b57c4;
+}
+
+.add {
+  grid-row: span 2;
+}
+
+.mult div {
+  transform: rotate(45deg);
+}
