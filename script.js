@@ -141,9 +141,3 @@ for (let i = 0; i < secOps.length; i++) {
   });
   removeStyle(secOps[i], "sec-op-click");
 }
-
-// A PROBLEM YOU ENCOUNTERED:
-// Before the way buttons were set they had a mousedown and mouseup event
-// if a user puts mouse down on a button and they move cursor to another button the original button will not be removed
-// to fix this a timeout is added in the mousedown which automatically removes the class after a delay
-// better than button:active since you can still move cursor and button stays active
