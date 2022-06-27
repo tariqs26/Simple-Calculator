@@ -1,11 +1,9 @@
 // DISPLAY RELATED FUNCTIONS AND VARIABLES
-
-// TODO Clean up code and document
 const display = document.querySelector(".screen span");
 const displayText = () => display.innerHTML;
-const updateDisplay = (value) => {
-  if (value.endsWith("Error")) display.classList.add("err");
-  display.innerHTML = value;
+const updateDisplay = (val) => {
+  if (val.endsWith("Error")) display.classList.add("err");
+  display.innerHTML = val;
 };
 
 const validateResult = (val) => {
@@ -14,16 +12,13 @@ const validateResult = (val) => {
     ? "Math Error"
     : valStr.length < 10
     ? valStr
-    : valStr.includes("e")
-    ? "Floating Error"
-    : valStr.slice(0, 11);
+    : val.toPrecision(7);
 };
 
 let firstNum = (operator = secondNum = null);
 let opEnter = false;
 
 const addStyle = (obj, style) => obj.classList.add("click", style);
-
 const removeStyle = (obj, style) => {
   obj.addEventListener("mouseup", function () {
     this.classList.remove("click", style);
@@ -50,20 +45,26 @@ for (let dig of document.querySelectorAll(".dig")) {
 // PRIMARY OPERATORS
 const [div, mult, sub, equal, add] = document.querySelectorAll(".op");
 
+const updateCalculation = (f1, f2, f3) =>
+  firstNum !== null && operator && !opEnter ? f1() : opEnter ? f2() : f3();
+
 const beforeOp = () => {
-  if (firstNum && operator && displayText() && !opEnter) {
-    secondNum = parseFloat(displayText());
-    firstNum = operator(firstNum, secondNum);
-    updateDisplay(validateResult(firstNum));
-    secondNum = null;
-    opEnter = true;
-  } else if (firstNum && operator && !displayText() || opEnter) {
-    void 0;
-  } else {
-    firstNum = parseFloat(displayText());
-    opEnter = true;
-  }
+  updateCalculation(
+    () => {
+      secondNum = parseFloat(displayText());
+      firstNum = operator(firstNum, secondNum);
+      updateDisplay(validateResult(firstNum));
+      secondNum = null;
+      opEnter = true;
+    },
+    () => void 0,
+    () => {
+      firstNum = parseFloat(displayText());
+      opEnter = true;
+    }
+  );
 };
+
 for (let op of [div, mult, sub, add, equal]) {
   op.addEventListener("mousedown", function () {
     addStyle(op, "op-click");
@@ -86,16 +87,16 @@ for (let op of [div, mult, sub, add, equal]) {
         operator = (a, b) => a + b;
         break;
       case equal:
-        if (firstNum && operator && displayText() && !opEnter) {
-          secondNum = secondNum ? secondNum : parseFloat(displayText());
-          const res = operator(firstNum, secondNum);
-          updateDisplay(validateResult(res));
-          firstNum = res;
-        } else if (!displayText() || opEnter) updateDisplay("Error");
-        else {
-          firstNum = parseFloat(displayText());
-          updateDisplay(validateResult(firstNum));
-        }
+        updateCalculation(
+          () => {
+            secondNum = secondNum ? secondNum : parseFloat(displayText());
+            const res = operator(firstNum, secondNum);
+            updateDisplay(validateResult(res));
+            firstNum = res;
+          },
+          () => updateDisplay("Error"),
+          () => (firstNum = parseFloat(displayText()))
+        );
         secondNum = operator = null;
         opEnter = false;
     }
@@ -122,7 +123,11 @@ const percentCallback = () =>
   updateDisplay((parseFloat(displayText()) / 100).toString());
 
 const delCallback = () => {
-  updateDisplay(displayText().length === 1 ? "0" : displayText().slice(0, -1));
+  updateDisplay(
+    displayText().length === 1 || displayText().slice(0, -1) === "-"
+      ? "0"
+      : displayText().slice(0, -1)
+  );
 };
 
 const secOpcallBacks = [clrCallback, delCallback, pmCallback, percentCallback];
