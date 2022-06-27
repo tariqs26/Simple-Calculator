@@ -14,6 +14,7 @@ body {
   display: grid;
   width: 320px;
   grid-template-columns: repeat(4, 1fr);
+  /* update 6-> desired number of rows to add more ops*/
   grid-template-rows: repeat(6, minmax(3.5em, auto));
   background-color: black;
   gap: 3px;
