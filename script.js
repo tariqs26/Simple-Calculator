@@ -10,13 +10,14 @@ const validateResult = (val) => {
   const valStr = val.toString();
   return isNaN(val)
     ? "Math Error"
-    : valStr.length < 10
+    : valStr.length < maxDigits
     ? valStr
-    : val.toPrecision(7);
+    : val.toPrecision(maxDigits - 3);
 };
 
 let firstNum = (operator = secondNum = null);
 let opEnter = false;
+let maxDigits = 10;
 
 const addStyle = (obj, style) => obj.classList.add("click", style);
 const removeStyle = (obj, style) => {
@@ -37,7 +38,7 @@ for (let dig of document.querySelectorAll(".dig")) {
     if ((displayText() === "0" && !(dig === ".")) || opEnter) {
       display.innerHTML = dig;
       opEnter = false;
-    } else if (displayText().length < 10) display.innerHTML += displayText().includes(".") && dig === "." ? "" : dig;
+    } else if (displayText().length < maxDigits) display.innerHTML += displayText().includes(".") && dig === "." ? "" : dig;
   });
   removeStyle(dig, "dig-click");
 }
@@ -140,8 +141,6 @@ for (let i = 0; i < secOps.length; i++) {
   });
   removeStyle(secOps[i], "sec-op-click");
 }
-
-
 
 // A PROBLEM YOU ENCOUNTERED:
 // Before the way buttons were set they had a mousedown and mouseup event
