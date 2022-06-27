@@ -12,7 +12,8 @@ body {
   margin: 19vh auto;
   border: 10px solid rgb(62, 41, 66);
   display: grid;
-  width: 320px;
+  /* account for widest digit being 8 with the - */
+  width: 365px; 
   grid-template-columns: repeat(4, 1fr);
   /* update 6-> desired number of rows to add more ops*/
   grid-template-rows: repeat(6, minmax(3.5em, auto));

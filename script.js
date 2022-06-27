@@ -6,18 +6,18 @@ const updateDisplay = (val) => {
   display.innerHTML = val;
 };
 
+let firstNum = (operator = secondNum = null);
+let opEnter = false;
+let maxDigits = 10;
+
 const validateResult = (val) => {
   const valStr = val.toString();
   return isNaN(val)
     ? "Math Error"
-    : valStr.length < maxDigits
+    : valStr.length <= maxDigits
     ? valStr
     : val.toPrecision(maxDigits - 3);
 };
-
-let firstNum = (operator = secondNum = null);
-let opEnter = false;
-let maxDigits = 10;
 
 const addStyle = (obj, style) => obj.classList.add("click", style);
 const removeStyle = (obj, style) => {
@@ -38,7 +38,7 @@ for (let dig of document.querySelectorAll(".dig")) {
     if ((displayText() === "0" && !(dig === ".")) || opEnter) {
       display.innerHTML = dig;
       opEnter = false;
-    } else if (displayText().length < maxDigits) display.innerHTML += displayText().includes(".") && dig === "." ? "" : dig;
+    } else if (displayText().length <= maxDigits) display.innerHTML += displayText().includes(".") && dig === "." ? "" : dig;
   });
   removeStyle(dig, "dig-click");
 }
