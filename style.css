@@ -3,16 +3,16 @@ body {
   background-color: rgb(213, 201, 201);
 }
 
-::selection{
-    background:none;
+::selection {
+  background: none;
 }
 
 .calculator {
-    box-shadow: 5px 5px 12px #574f4f;
+  box-shadow: 5px 5px 12px #574f4f;
   margin: 19vh auto;
   border: 9px solid rgb(62, 41, 66);
   display: grid;
-  width: 340px;
+  width: 320px;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(6, minmax(3.5em, auto));
   background-color: black;
@@ -36,7 +36,7 @@ body {
   margin: 0 4px;
 }
 button {
-  font-size: 1.5em;
+  font-size: 1.6em;
   border-radius: 0.14em;
   border: 1px solid black;
   background-color: hsl(0, 24%, 80%);
@@ -45,7 +45,7 @@ button {
 
 .op {
   background-color: #ffa500;
-  font-size: 1.6em;
+  font-size: 1.8em;
 }
 
 .sec-op {
@@ -57,7 +57,7 @@ button:hover {
 }
 
 .click {
-  transform: translateY(0.5px);
+  transform: translateY(0.6px);
 }
 
 .dig-click {
@@ -72,10 +72,6 @@ button:hover {
   background-color: #7b57c4;
 }
 
-.add {
-  grid-row: span 2;
-}
-
-.mult div {
-  transform: rotate(45deg);
+span.err {
+  font-size: 2.5em;
 }
