@@ -10,7 +10,7 @@ body {
 .calculator {
   box-shadow: 5px 5px 12px #574f4f;
   margin: 19vh auto;
-  border: 9px solid rgb(62, 41, 66);
+  border: 10px solid rgb(62, 41, 66);
   display: grid;
   width: 320px;
   grid-template-columns: repeat(4, 1fr);

@@ -1,3 +1,6 @@
+// DISPLAY RELATED FUNCTIONS AND VARIABLES
+
+// TODO Clean up code and document
 const display = document.querySelector(".screen span");
 const displayText = () => display.innerHTML;
 const updateDisplay = (value) => {
@@ -5,52 +8,65 @@ const updateDisplay = (value) => {
   display.innerHTML = value;
 };
 
-const removeStyles = (obj, list) => {
-  obj.addEventListener("mouseup", function () {
-    this.classList.remove(...list);
-  });
-  obj.addEventListener("mouseleave", function () {
-    this.classList.remove(...list);
-  });
+const validateResult = (val) => {
+  const valStr = val.toString();
+  return isNaN(val)
+    ? "Math Error"
+    : valStr.length < 10
+    ? valStr
+    : valStr.includes("e")
+    ? "Floating Error"
+    : valStr.slice(0, 11);
 };
 
 let firstNum = (operator = secondNum = null);
+let opEnter = false;
 
+const addStyle = (obj, style) => obj.classList.add("click", style);
+
+const removeStyle = (obj, style) => {
+  obj.addEventListener("mouseup", function () {
+    this.classList.remove("click", style);
+  });
+  obj.addEventListener("mouseleave", function () {
+    this.classList.remove("click", style);
+  });
+};
+
+// DIGITS
 for (let dig of document.querySelectorAll(".dig")) {
   dig.addEventListener("mousedown", function () {
-    this.classList.add("click", "dig-click");
+    addStyle(this, "dig-click");
     if (displayText().endsWith("Error")) return;
     let dig = this.value ? this.value : this.innerHTML;
-    if (displayText() === "0" && !(dig === ".")) display.innerHTML = dig;
-    else if (displayText().length < 10)
-      display.innerHTML +=
-        displayText().includes(".") && dig === "." ? "" : dig;
+    if ((displayText() === "0" && !(dig === ".")) || opEnter) {
+      display.innerHTML = dig;
+      opEnter = false;
+    } else if (displayText().length < 10) display.innerHTML += displayText().includes(".") && dig === "." ? "" : dig;
   });
-  removeStyles(dig, ["click", "dig-click"]);
+  removeStyle(dig, "dig-click");
 }
 
 // PRIMARY OPERATORS
 const [div, mult, sub, equal, add] = document.querySelectorAll(".op");
 
-const operatorStyle = (op) => op.classList.add("click", "op-click");
-
 const beforeOp = () => {
-  if (firstNum && operator && displayText()) {
-    console.log(displayText());
+  if (firstNum && operator && displayText() && !opEnter) {
     secondNum = parseFloat(displayText());
     firstNum = operator(firstNum, secondNum);
+    updateDisplay(validateResult(firstNum));
     secondNum = null;
-  } else if (firstNum && operator && !displayText()) {
+    opEnter = true;
+  } else if (firstNum && operator && !displayText() || opEnter) {
     void 0;
   } else {
     firstNum = parseFloat(displayText());
+    opEnter = true;
   }
-  updateDisplay("");
 };
-
 for (let op of [div, mult, sub, add, equal]) {
   op.addEventListener("mousedown", function () {
-    operatorStyle(this);
+    addStyle(op, "op-click");
     if (displayText().endsWith("Error")) return;
     switch (op) {
       case div:
@@ -70,48 +86,31 @@ for (let op of [div, mult, sub, add, equal]) {
         operator = (a, b) => a + b;
         break;
       case equal:
-        console.log(displayText());
-
-        if (firstNum && operator && displayText()) {
+        if (firstNum && operator && displayText() && !opEnter) {
           secondNum = secondNum ? secondNum : parseFloat(displayText());
           const res = operator(firstNum, secondNum);
-          const resStr = res.toString();
-          updateDisplay(
-            isNaN(res)
-              ? "Math Error"
-              : resStr.length < 10
-              ? resStr
-              : resStr.includes("e")
-              ? "Floating Error"
-              : resStr.slice(0, 11)
-          );
+          updateDisplay(validateResult(res));
           firstNum = res;
-          console.log(secondNum);
-        } else if (!displayText()) {
-          updateDisplay("Error");
-        } else {
+        } else if (!displayText() || opEnter) updateDisplay("Error");
+        else {
           firstNum = parseFloat(displayText());
-          updateDisplay(firstNum.toString());
+          updateDisplay(validateResult(firstNum));
         }
-        secondNum = null;
-        operator = null;
-        break;
+        secondNum = operator = null;
+        opEnter = false;
     }
   });
-  removeStyles(op, ["click", "op-click"]);
+  removeStyle(op, "op-click");
 }
 // SECONDARY OPERATORS
 
 const [clr, del, pm, percent] = document.querySelectorAll(".sec-op");
 
-const secondaryOpStyle = function (obj) {
-  obj.classList.add("click", "sec-op-click");
-};
-
 const clrCallback = () => {
   display.innerHTML = "0";
   display.classList.remove("err");
   firstNum = secondNum = operator = null;
+  opEnter = false;
 };
 
 const pmCallback = () => {
@@ -125,21 +124,22 @@ const percentCallback = () =>
 const delCallback = () => {
   updateDisplay(displayText().length === 1 ? "0" : displayText().slice(0, -1));
 };
+
 const secOpcallBacks = [clrCallback, delCallback, pmCallback, percentCallback];
 const secOps = [clr, del, pm, percent];
 for (let i = 0; i < secOps.length; i++) {
   secOps[i].addEventListener("mousedown", function () {
-    secondaryOpStyle(this);
+    addStyle(this, "sec-op-click");
     if (displayText().endsWith("Error") && secOps[i] != clr) return;
     secOpcallBacks[i]();
   });
-  removeStyles(secOps[i], ["click", "sec-op-click"]);
+  removeStyle(secOps[i], "sec-op-click");
 }
+
+
 
 // A PROBLEM YOU ENCOUNTERED:
 // Before the way buttons were set they had a mousedown and mouseup event
 // if a user puts mouse down on a button and they move cursor to another button the original button will not be removed
 // to fix this a timeout is added in the mousedown which automatically removes the class after a delay
 // better than button:active since you can still move cursor and button stays active
-
-// DIGITS
