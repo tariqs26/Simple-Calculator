@@ -29,10 +29,10 @@ const toPrecision = (val) => {
 const addStyle = (obj, style) => obj.classList.add("click", style);
 const removeStyle = (obj, style) => {
   obj.addEventListener("mouseup", function () {
-    this.classList.remove("click", style);
+    opEnter || this.classList.remove("click", style);
   });
   obj.addEventListener("mouseleave", function () {
-    this.classList.remove("click", style);
+    opEnter || this.classList.remove("click", style);
   });
 };
 
@@ -45,6 +45,9 @@ for (let dig of document.querySelectorAll(".dig")) {
     if ((displayText() === "0" && !(dig === ".")) || opEnter) {
       display.innerHTML = dig;
       opEnter = false;
+      for (let op of document.querySelectorAll(".op")) {
+        op.classList.remove("click", "op-click");
+      }
     } else if (displayText().length <= maxDigits) display.innerHTML += displayText().includes(".") && dig === "." ? "" : dig;
   });
   removeStyle(dig, "dig-click");
@@ -73,10 +76,19 @@ const beforeOp = () => {
   );
 };
 
+const removeOpStyle = (op) => {
+  const otherOps = [div, mult, sub, add, equal].filter((o) => o !== op)
+
+  for (let op of otherOps) {
+    op.classList.remove("click", "op-click");
+  }
+}
+
 for (let op of [div, mult, sub, add, equal]) {
   op.addEventListener("mousedown", function () {
     addStyle(op, "op-click");
     if (displayText().endsWith("Error")) return;
+    removeOpStyle(op);
     switch (op) {
       case div:
         beforeOp();
