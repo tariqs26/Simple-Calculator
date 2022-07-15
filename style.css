@@ -13,10 +13,12 @@ body {
   border: 10px solid rgb(62, 41, 66);
   display: grid;
   /* account for widest digit being 8 with the - */
-  width: 365px; 
+  /*
+  account for reverse floating percision when -888888888 is used repeatedly with % operator, so it does not overflow the screen and when +e is followed by 3 digit number*/
+  width: 26.5em; 
   grid-template-columns: repeat(4, 1fr);
   /* update 6-> desired number of rows to add more ops*/
-  grid-template-rows: repeat(6, minmax(3.5em, auto));
+  grid-template-rows: repeat(6, minmax(4em, auto));
   background-color: black;
   gap: 3px;
   border-radius: 0.4em;
@@ -24,7 +26,7 @@ body {
 
 .screen {
   display: flex;
-  height: 6em;
+  height: 7em;
   grid-column: span 4;
   background-color: rgb(64, 49, 49);
   margin-bottom: 4px;
@@ -37,6 +39,7 @@ body {
   font-size: 3em;
   margin: 0 4px;
 }
+
 button {
   font-size: 1.6em;
   border-radius: 0.14em;

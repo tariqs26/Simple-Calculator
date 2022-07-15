@@ -137,7 +137,9 @@ const pmCallback = () => {
     num[0] === "-" ? num.slice(1) : !parseInt(num) ? num : "-" + num;
 };
 const percentCallback = () =>
-  updateDisplay((parseFloat(displayText()) / 100).toString());
+  updateDisplay(
+    validateResult(parseFloat(displayText()) / 100)
+    );
 
 const delCallback = () => {
   updateDisplay(
