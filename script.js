@@ -15,8 +15,15 @@ const validateResult = (val) => {
   return isNaN(val)
     ? "Math Error"
     : valStr.length <= maxDigits
-    ? valStr
-    : val.toPrecision(maxDigits - 3);
+    ? toPrecision(valStr)
+    : toPrecision(val.toPrecision(maxDigits - 3))
+};
+
+const toPrecision = (val) => {
+  if (!val.includes(".") || val.includes("e")) return val;
+  return parseFloat(val.slice(0, -1)) === parseFloat(val)
+    ? toPrecision(val.slice(0, -1))
+    : val;
 };
 
 const addStyle = (obj, style) => obj.classList.add("click", style);
