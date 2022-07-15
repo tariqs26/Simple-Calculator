@@ -16,7 +16,7 @@ const validateResult = (val) => {
     ? "Math Error"
     : valStr.length <= maxDigits
     ? toPrecision(valStr)
-    : toPrecision(val.toPrecision(maxDigits - 3))
+    : toPrecision(val.toPrecision(maxDigits - 3));
 };
 
 const toPrecision = (val) => {
@@ -77,12 +77,9 @@ const beforeOp = () => {
 };
 
 const removeOpStyle = (op) => {
-  const otherOps = [div, mult, sub, add, equal].filter((o) => o !== op)
-
-  for (let op of otherOps) {
-    op.classList.remove("click", "op-click");
-  }
-}
+  const otherOps = [div, mult, sub, add, equal].filter((o) => o !== op);
+  for (let op of otherOps) op.classList.remove("click", "op-click");
+};
 
 for (let op of [div, mult, sub, add, equal]) {
   op.addEventListener("mousedown", function () {
